@@ -1,0 +1,27 @@
+{
+    "name": "express-packs",
+    "version": "0.0.1",
+    "description": "Helps you organize your express application in such a way that each feature is located in own directory along with views, routes and public assets.",
+    "author" : "Richard S Allinson <npm@mountainmansoftware.com>",
+    "engines" : {
+        "node" : ">= 0.10.0 < 0.12.0"
+    },
+    "scripts": {
+        "test": "./test/run"
+    },
+    "dependencies" : {
+        "express": "*",
+        "consolidate": "*",
+        "handlebars": "*"
+    },
+    "devDependencies": {
+        "mocha": "*",
+        "jshint": "*",
+        "istanbul": "*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ricallinson/express-packs.git"
+    },
+    "license": "MIT"
+}
