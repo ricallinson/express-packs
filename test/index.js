@@ -26,7 +26,6 @@
 "use strict";
 
 var expressPacks = require("../"),
-    express = require("express"),
     assert = require("assert");
 
 describe("expressPacks", function () {

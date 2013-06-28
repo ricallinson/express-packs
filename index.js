@@ -142,7 +142,7 @@ Packs.prototype.listPacks = function (dir) {
 
 module.exports = function (app) {
 
-    var loader = new Packs(),
+    var loader = this.create(),
         packs,
         index;
 
