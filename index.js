@@ -32,6 +32,12 @@ var express = require("express"),
     fslib = require("fs");
 
 /*
+    Packs Object.
+*/
+
+function Packs() {}
+
+/*
     exports.GET_index === GET /
     exports.GET_page === GET /page
     exports.POST_page === POST /page
@@ -39,30 +45,34 @@ var express = require("express"),
     exports["POST_/admin/logon"] === POST /admin/logon
 */
 
-function Packs() {
-    this.me = {};
-}
+Packs.prototype.parseKey = function (key, prefix) {
 
-Packs.prototype.parseKey = function (prefix, key) {
+    var route = {
+        source: "",
+        method: "",
+        path: ""
+    };
 
-    var http = {};
+    if (!key) {
+        return route;
+    }
 
     prefix = prefix || "/";
 
-    http.source = key.split("_");
+    route.source = key.split("_");
 
-    if (http.source.length === 1) {
-        http.source.unshift("");
+    if (route.source.length === 1) {
+        route.source.unshift("");
     }
 
-    if (http.source[1] === "index") {
-        http.source[1] = "";
+    if (route.source[1] === "index") {
+        route.source[1] = "";
     }
 
-    http.method = http.source[0].toLowerCase();
-    http.path = pathlib.join(prefix, http.source[1]);
+    route.method = route.source[0].toLowerCase();
+    route.path = pathlib.join(prefix, route.source[1]);
 
-    return http;
+    return route;
 };
 
 /*
@@ -79,7 +89,7 @@ Packs.prototype.loadPack = function (abspath, app) {
 
     var controller = require(abspath),
         key,
-        http,
+        route,
         assetsPath = pathlib.join("/", pathlib.basename(pathlib.dirname(abspath)), "assets"),
         assetsRoot = pathlib.join(pathlib.dirname(abspath), "assets");
 
@@ -89,10 +99,10 @@ Packs.prototype.loadPack = function (abspath, app) {
 
         if (typeof controller[key] === "function") {
 
-            http = this.parseKey(controller.path, key);
+            route = this.parseKey(key, controller.path);
 
-            if (http.method) {
-                app[http.method](http.path, controller[key]);
+            if (route.method) {
+                app[route.method](route.path, controller[key]);
             }
         }
     }
@@ -142,7 +152,7 @@ Packs.prototype.listPacks = function (dir) {
 
 module.exports = function (app) {
 
-    var loader = this.create(),
+    var loader = module.exports.create(),
         packs,
         index;
 
