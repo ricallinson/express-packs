@@ -28,8 +28,8 @@
 */
 
 var express = require("express"),
-    fslib = require("fs"),
-    pathlib = require("path");
+    pathlib = require("path"),
+    fslib = require("fs");
 
 /*
     exports.GET_index === GET /
@@ -39,7 +39,11 @@ var express = require("express"),
     exports["POST_/admin/logon"] === POST /admin/logon
 */
 
-exports.parseKey = function (prefix, key) {
+function Packs() {
+    this.me = {};
+}
+
+Packs.prototype.parseKey = function (prefix, key) {
 
     var http = {};
 
@@ -71,7 +75,7 @@ exports.parseKey = function (prefix, key) {
     exports.path = "/prefix";
 */
 
-exports.load = function (abspath, app) {
+Packs.prototype.loadPack = function (abspath, app) {
 
     var controller = require(abspath),
         key,
@@ -98,12 +102,16 @@ exports.load = function (abspath, app) {
     Returns a list of modules which can be loaded via the "express-module-loader".
 */
 
-exports.getModuleList = function (dir) {
+Packs.prototype.listPacks = function (dir) {
 
     var items,
         index,
         abspath,
         list = [];
+
+    if (!dir) {
+        return list;
+    }
 
     /*
         Get a list of all the files in the given directory.
@@ -129,18 +137,38 @@ exports.getModuleList = function (dir) {
 
 /*
     Given an express application as "app" this function will
-    attach all "express-modules" found in the given "dir" or the current
-    "node_modules" folder.
+    attach all "express-packs" found in the given "packs dir" folder.
 */
 
-exports.attach = function (app) {
+module.exports = function (app) {
 
-    var modules,
+    var loader = new Packs(),
+        packs,
         index;
 
-    modules = this.getModuleList(app.get("modules dir"));
-
-    for (index in modules) {
-        this.load(modules[index], app);
+    if (!app) {
+        throw new Error("You must provided an express app.");
     }
+
+    if (!app.get("packs dir")) {
+        throw new Error("The express app must have a setting of 'packs dir' which is an absolute path.");
+    }
+
+    packs = loader.listPacks(app.get("packs dir"));
+
+    for (index in packs) {
+        loader.loadPack(packs[index], app);
+    }
+
+    return function (req, res, next) {
+        next();
+    };
+};
+
+/*
+    Expose the raw Packs object.
+*/
+
+module.exports.create = function () {
+    return new Packs();
 };

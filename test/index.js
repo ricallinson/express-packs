@@ -25,11 +25,43 @@
 
 "use strict";
 
-var epacks = require("../"),
+var expressPacks = require("../"),
+    express = require("express"),
     assert = require("assert");
 
-describe("epacks", function () {
+describe("expressPacks", function () {
     it("should return a function", function () {
-        assert.equal(typeof epacks, "function");
+        assert.equal(typeof expressPacks, "function");
+    });
+
+    it("should throw an error", function () {
+        assert.throws(expressPacks);
+    });
+});
+
+describe("expressPacks.listPacks()", function () {
+
+    var loader = expressPacks.create();
+
+    it("should return a function", function () {
+        assert.equal(typeof loader.listPacks, "function");
+    });
+});
+
+describe("expressPacks.loadPack()", function () {
+
+    var loader = expressPacks.create();
+
+    it("should return a function", function () {
+        assert.equal(typeof loader.loadPack, "function");
+    });
+});
+
+describe("expressPacks.parseKey()", function () {
+
+    var loader = expressPacks.create();
+
+    it("should return a function", function () {
+        assert.equal(typeof loader.parseKey, "function");
     });
 });
