@@ -32,6 +32,26 @@ var express = require("express"),
     fslib = require("fs");
 
 /*
+    Backwards compatability for 0.6.x
+*/
+
+if (!fslib.existsSync) {
+    fslib.existsSync = function (path) {
+        var stats;
+        try {
+            stats = fslib.lstatSync(path);
+            if (stats.isDirectory() || stats.isFile()) {
+                return true;
+            }
+        }
+        catch (e) {
+            // ...
+        }
+        return false;
+    };
+}
+
+/*
     Packs Object.
 */
 
