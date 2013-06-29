@@ -4,7 +4,7 @@
     "description": "Helps you organize your express application in such a way that each feature is located in own directory along with views, routes and public assets.",
     "author" : "Richard S Allinson <npm@mountainmansoftware.com>",
     "engines" : {
-        "node" : ">= 0.10.0 < 0.12.0"
+        "node" : ">= 0.6.0 < 0.12.0"
     },
     "scripts": {
         "test": "./test/run"
