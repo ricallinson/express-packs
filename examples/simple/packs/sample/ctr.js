@@ -6,5 +6,5 @@ exports.GET_index = function (req, res) {
 		body: "Hi there!"
 	};
 
-	res.render("sample/views/index", data);
+	res.render("sample/views/index.html", data);
 };

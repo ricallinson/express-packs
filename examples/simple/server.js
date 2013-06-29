@@ -41,23 +41,25 @@ var express = require("express"),
 app.engine("html", consolidate.handlebars);
 
 /*
-    set .html as the default extension.
+    Set the directory where the packs are to be found.
 */
-
-app.set("view engine", "html");
-
-/**/
 
 app.set("packs dir", pathlib.join(__dirname, "packs"));
 
-/**/
+/*
+    Set the view directory to be the same as the packs directory.
+*/
 
-app.set("views", pathlib.join(__dirname, "packs"));
+app.set("views", app.get("packs dir"));
 
-/**/
+/*
+    Lastly use the express-packs as middleware.
+*/
 
 app.use(expressPacks(app));
 
-/**/
+/*
+    Start the express application.
+*/
 
 app.listen(3000);
