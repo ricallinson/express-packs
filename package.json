@@ -10,9 +10,7 @@
         "test": "./test/run"
     },
     "dependencies" : {
-        "express": "*",
-        "consolidate": "*",
-        "handlebars": "*"
+        "express": "*"
     },
     "devDependencies": {
         "mocha": "*",
