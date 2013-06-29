@@ -227,3 +227,30 @@ describe("expressPacks.parseKey()", function () {
         assert.equal(route.path, "/path");
     });
 });
+
+describe("existsSync()", function () {
+
+    it("should return a true", function () {
+        var abspath = pathlib.join(__dirname, "fixtures", "pack1", "ctr.js"),
+            exists = expressPacks.existsSync(abspath);
+        assert.equal(exists, true);
+    });
+
+    it("should return a true", function () {
+        var abspath = pathlib.join(__dirname, "fixtures", "pack1"),
+            exists = expressPacks.existsSync(abspath);
+        assert.equal(exists, true);
+    });
+
+    it("should return a false", function () {
+        var abspath = pathlib.join(__dirname, "fixtures", "pack1", "empty"),
+            exists = expressPacks.existsSync(abspath);
+        assert.equal(exists, false);
+    });
+
+    it("should return a flase", function () {
+        var abspath = "",
+            exists = expressPacks.existsSync(abspath);
+        assert.equal(exists, false);
+    });
+});

@@ -35,20 +35,26 @@ var express = require("express"),
     Backwards compatability for 0.6.x
 */
 
+function existsSync(path) {
+    var stats;
+    try {
+        stats = fslib.lstatSync(path);
+        if (stats.isDirectory() || stats.isFile()) {
+            return true;
+        }
+    }
+    catch (e) {
+        // ...
+    }
+    return false;
+}
+
+/*
+    If there is no existsSync() function on fslib add it.
+*/
+
 if (!fslib.existsSync) {
-    fslib.existsSync = function (path) {
-        var stats;
-        try {
-            stats = fslib.lstatSync(path);
-            if (stats.isDirectory() || stats.isFile()) {
-                return true;
-            }
-        }
-        catch (e) {
-            // ...
-        }
-        return false;
-    };
+    fslib.existsSync = existsSync;
 }
 
 /*
@@ -196,9 +202,15 @@ module.exports = function (app) {
 };
 
 /*
-    Expose the raw Packs object.
+    Expose the raw Packs object for testing.
 */
 
 module.exports.create = function () {
     return new Packs();
 };
+
+/*
+    Expose the existsSync function for testing.
+*/
+
+module.exports.existsSync = existsSync;
